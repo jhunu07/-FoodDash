@@ -1,0 +1,107 @@
+.app-download-compact {
+  margin: 40px auto;
+  padding: 30px 8vw;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px;
+  color: white;
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+}
+
+.app-download-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+}
+
+.compact-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.compact-text {
+  flex: 1;
+}
+
+.compact-text h3 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.compact-text p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.compact-stores {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.store-link-compact {
+  display: block;
+  transition: all 0.3s ease;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.store-link-compact:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.store-link-compact img {
+  height: 50px;
+  width: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .app-download-compact {
+    margin: 30px auto;
+    padding: 25px 6vw;
+  }
+  
+  .compact-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 20px;
+  }
+  
+  .compact-text h3 {
+    font-size: 20px;
+  }
+  
+  .compact-text p {
+    font-size: 14px;
+  }
+  
+  .store-link-compact img {
+    height: 45px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-download-compact {
+    margin: 20px auto;
+    padding: 20px 4vw;
+  }
+  
+  .compact-stores {
+    gap: 12px;
+  }
+  
+  .store-link-compact img {
+    height: 40px;
+  }
+}
