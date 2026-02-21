@@ -1,12 +1,116 @@
-# React + Vite
+# 🍕 FoodDrop - Food Delivery App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern food delivery web application built with React and Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🛒 Browse menu and add items to cart
+- 🔐 User authentication (Login/Signup)
+- 💳 Multiple payment options (Online & Cash on Delivery)
+- 📦 Real-time order tracking
+- 📱 Responsive design
+- ❓ Help & Support page
+- 📖 Our Story page
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Frontend:** React 19, React Router
+- **Styling:** CSS3
+- **Build Tool:** Vite
+- **HTTP Client:** Axios
+- **PDF Generation:** jsPDF
+
+## Setup Instructions
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Environment Variables**
+   
+   Create a `.env` file in the root directory:
+   ```env
+   VITE_API_URL=http://localhost:5001
+   ```
+
+4. **Start development server**
+   ```bash
+   npm run dev
+   ```
+   App will run on `http://localhost:5173`
+
+5. **Build for production**
+   ```bash
+   npm run build
+   ```
+
+## Project Structure
+
+```
+src/
+├── Components/      # Reusable components
+│   ├── Navbar/
+│   ├── Footer/
+│   ├── FoodItem/
+│   └── ...
+├── pages/          # Page components
+│   ├── Home/
+│   ├── cart/
+│   ├── PlaceOrder/
+│   ├── Help/
+│   └── ...
+├── context/        # React Context (Global State)
+├── assets/         # Images and static files
+└── main.jsx        # Entry point
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Environment Variables
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `VITE_API_URL` | Backend API URL | `http://localhost:5001` |
+
+## Features in Detail
+
+### User Features
+- Browse food menu by categories
+- Add/remove items from cart
+- Place orders with delivery details
+- Track order status
+- Download order invoices (PDF)
+- Cancel orders (before confirmation)
+
+### Pages
+- **Home** - Hero section, menu, app download
+- **Cart** - Shopping cart with promo codes
+- **Place Order** - Checkout with delivery details
+- **My Orders** - Order history and tracking
+- **Help** - FAQs and support
+- **Our Story** - About the company
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Open a Pull Request
+
+## License
+
+ISC
+

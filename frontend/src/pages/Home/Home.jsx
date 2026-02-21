@@ -14,7 +14,10 @@ const [category,setCategory]=useState("All");
       <Header />
      <ExploreMenu category={category} setCategory={setCategory}/>
      <FoodDisplay category={category}/>
-     <AppDownload/>
+     <div id="app-download">
+        <AppDownload/>
+     </div>
+    
      
     </div>
   );

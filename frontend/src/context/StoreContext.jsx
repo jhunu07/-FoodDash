@@ -4,7 +4,7 @@ import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-  const url = "http://localhost:5001";
+  const url = import.meta.env.VITE_API_URL || "http://localhost:5001";
 
   const [token, setToken] = useState(null);
   const [food_list, setFoodList] = useState([]);
@@ -39,7 +39,7 @@ const StoreContextProvider = (props) => {
       const response = await axios.get(`${url}/api/food/list`);
       setFoodList(response.data.data);
     } catch (err) {
-      console.error("Error fetching food list:", err.message);
+      // Handle error silently or show user-friendly message
     }
   };
 
@@ -59,12 +59,9 @@ const StoreContextProvider = (props) => {
       const cartData = response.data?.cartData;
       if (cartData) {
         setCartItems(cartData);
-        localStorage.removeItem("cartItems"); // ✅ Clear local cart backup
-      } else {
-        console.warn("No cart data received from server.");
+        localStorage.removeItem("cartItems");
       }
     } catch (error) {
-      console.error("Failed to load cart:", error.response?.data?.message || error.message);
       if (error.response?.status === 401) {
         // Token expired or invalid
         localStorage.removeItem("token");
@@ -92,7 +89,7 @@ const StoreContextProvider = (props) => {
           }
         );
       } catch (err) {
-        console.error("Add to cart error:", err.message);
+        // Handle error
       }
     }
   };
@@ -121,7 +118,7 @@ const StoreContextProvider = (props) => {
           }
         );
       } catch (err) {
-        console.error("Remove from cart error:", err.message);
+        // Handle error
       }
     }
   };

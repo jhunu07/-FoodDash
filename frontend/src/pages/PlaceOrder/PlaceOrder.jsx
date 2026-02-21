@@ -82,7 +82,6 @@ const PlaceOrder = () => {
         alert(response.data.message || 'Failed to place order. Please try again.');
       }
     } catch (error) {
-      console.error('Order Error:', error.response?.data || error);
       alert(error.response?.data?.message || 'An error occurred while placing the order.');
     } finally {
       setIsSubmitting(false);

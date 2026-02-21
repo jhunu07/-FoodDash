@@ -1,5 +1,5 @@
-import React from 'react';
-import Navbar from './Components/Navbar';
+
+import Navbar from './Components/Navbar/Navbar';
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Cart from './pages/cart/Cart';
@@ -9,7 +9,9 @@ import LoginPopup from './Components/LoginPopup/LoginPopup';
  import {useState} from 'react'
 import Verify from './pages/Verify/Verify';
 import MyOrders from './pages/MyOrders/MyOrders';
-import ContactUs from './pages/ContactUs';
+import OurStory from './pages/OurStory/OurStory';
+import Help from './pages/Help/Help';
+import NotFound from './pages/NotFound/NotFound';
 
 const App = () => {
 
@@ -28,7 +30,9 @@ const App = () => {
         <Route path='/order' element={<PlaceOrder/>} />
         <Route path='/verify' element={<Verify/>} />
         <Route path='/myorders'element={<MyOrders/>}/>
-        <Route path='/contact' element={<ContactUs/>} />
+        <Route path='/our-story' element={<OurStory/>} />
+        <Route path='/help' element={<Help/>} />
+        <Route path='*' element={<NotFound/>} />
       </Routes>
     </div>
     <Footer />

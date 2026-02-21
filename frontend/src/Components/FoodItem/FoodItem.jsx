@@ -137,8 +137,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                // Add to favorites functionality (you can implement this)
-                console.log('Added to favorites:', name);
+                // Add to favorites functionality
               }}
               style={{
                 background: 'linear-gradient(135deg, #ff6b6b, #ee5a52)',
@@ -163,8 +162,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                // Share functionality (you can implement this)
-                console.log('Sharing:', name);
+                // Share functionality
               }}
               style={{
                 background: 'linear-gradient(135deg, #4ecdc4, #44a08d)',

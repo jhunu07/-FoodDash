@@ -2,7 +2,7 @@ import React from 'react'
 import './AppDownload.css'
 import { assets } from '../../assets/assets'
 
-const AppDownloadCompact = () => {
+const AppDownload = () => {
   return (
     <div className="app-download-compact">
       <div className="compact-content">
@@ -24,4 +24,4 @@ const AppDownloadCompact = () => {
   )
 }
 
-export default AppDownloadCompact
+export default AppDownload

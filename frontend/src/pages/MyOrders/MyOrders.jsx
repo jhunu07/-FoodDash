@@ -45,7 +45,6 @@ const MyOrders = () => {
         alert(response.data.message || 'Failed to cancel order');
       }
     } catch (error) {
-      console.error('Error cancelling order:', error);
       alert('Failed to cancel order. Please try again.');
     }
   };
@@ -228,7 +227,7 @@ const MyOrders = () => {
       // Save the PDF
       doc.save(`EatSprint_Invoice_${orderId}.pdf`);
     } catch (error) {
-      console.error('Error generating invoice:', error);
+
       alert('Failed to generate invoice. Please try again.');
     }
   };
