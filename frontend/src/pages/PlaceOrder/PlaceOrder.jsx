@@ -367,7 +367,7 @@ const navigate = useNavigate()
               <div className="items-list">
                 {orderItems.map((item) => (
                   <div key={item._id} className="summary-item">
-                    <img src={url + "/images/" + item.image} alt={item.name} />
+                    <img src={item.image.startsWith('http') ? item.image : url + "/images/" + item.image} alt={item.name} />
                     <div className="item-details">
                       <h4>{item.name}</h4>
                       <p>Qty: {cartItems[item._id]}</p>

@@ -54,7 +54,7 @@ const Cart = () => {
                     <div key={item._id} className='cart-item-card'>
                       <div className="cart-item-product">
                         <div className="cart-item-image">
-                          <img src={url + "/images/" + item.image} alt={item.name} />
+                          <img src={item.image.startsWith('http') ? item.image : url + "/images/" + item.image} alt={item.name} />
                         </div>
                         <div className="cart-item-details">
                           <h3>{item.name}</h3>

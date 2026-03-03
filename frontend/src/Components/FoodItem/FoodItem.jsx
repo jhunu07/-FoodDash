@@ -52,7 +52,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
         {/* Image with loading placeholder */}
         <img 
           className='food-item-image' 
-          src={url + "/images/" + image} 
+          src={image.startsWith('http') ? image : url + "/images/" + image} 
           alt={name}
           onLoad={handleImageLoad}
           style={{
