@@ -19,15 +19,21 @@ const List = () => {
   }
 
   const removeFood = async (foodId) => {
-    const response = await axios.post(`${url}/api/food/remove`, {
-      id: foodId
-    })
-    await fetchList();
-    if (response.data.success) {
-      toast.success(response.data.message);
-    }
-    else {
-      toast.error("Error")
+    try {
+      const response = await axios.post(`${url}/api/food/remove`, {
+        id: foodId
+      })
+      
+      if (response.data.success) {
+        toast.success(response.data.message);
+        await fetchList();
+      }
+      else {
+        toast.error(response.data.message || "Error removing food")
+      }
+    } catch (error) {
+      console.error('Delete error:', error);
+      toast.error(error.response?.data?.message || 'Failed to delete food item');
     }
   }
 
@@ -49,7 +55,7 @@ const List = () => {
         {list.map((item, index) => {
           return (
             <div key={index} className='list-table-format'>
-              <img src={`${url}/images/` + item.image} alt="" />
+              <img src={item.image.startsWith('http') ? item.image : `${url}/images/` + item.image} alt="" />
               <p>{item.name}</p>
               <p>{item.category}</p>
               <p>{currency}{item.price}</p>

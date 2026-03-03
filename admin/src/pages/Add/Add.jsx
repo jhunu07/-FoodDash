@@ -23,25 +23,32 @@ const Add = () => {
             return null;
         }
 
-        const formData = new FormData();
-        formData.append("name", data.name);
-        formData.append("description", data.description);
-        formData.append("price", Number(data.price));
-        formData.append("category", data.category);
-        formData.append("image", image);
-        const response = await axios.post(`${url}/api/food/add`, formData);
-        if (response.data.success) {
-            toast.success(response.data.message)
-            setData({
-                name: "",
-                description: "",
-                price: "",
-                category: data.category
-            })
-            setImage(false);
-        }
-        else {
-            toast.error(response.data.message)
+        try {
+            const formData = new FormData();
+            formData.append("name", data.name);
+            formData.append("description", data.description);
+            formData.append("price", Number(data.price));
+            formData.append("category", data.category);
+            formData.append("image", image);
+            
+            const response = await axios.post(`${url}/api/food/add`, formData);
+            
+            if (response.data.success) {
+                toast.success(response.data.message)
+                setData({
+                    name: "",
+                    description: "",
+                    price: "",
+                    category: data.category
+                })
+                setImage(false);
+            }
+            else {
+                toast.error(response.data.message)
+            }
+        } catch (error) {
+            console.error('Upload error:', error);
+            toast.error(error.response?.data?.message || 'Failed to add food item');
         }
     }
 
