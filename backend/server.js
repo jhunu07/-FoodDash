@@ -25,9 +25,6 @@ app.use(cors());
 // DB connection
 connectDB();
 
-// Static folder for images
-app.use('/images', express.static(path.join(__dirname, 'uploads')));
-
 // API routes
 app.use('/api/user', userRouter);
 app.use('/api/food', foodRouter);
