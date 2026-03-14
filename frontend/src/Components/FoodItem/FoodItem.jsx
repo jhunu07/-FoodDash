@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import './FoodItem.css';
 import { assets } from '../../assets/assets';
 import { StoreContext } from '../../context/StoreContext';
@@ -6,16 +6,18 @@ import { StoreContext } from '../../context/StoreContext';
 const FoodItem = ({ id, name, price, description, image }) => {
   const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
   const [isHovered, setIsHovered] = useState(false);
-  const [isNew, setIsNew] = useState(false);
-  const [isPopular, setIsPopular] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
-  // Simulate determining if item is new or popular (you can replace this with real logic)
-  useEffect(() => {
-    // Random chance for demo - replace with real data
-    setIsNew(Math.random() < 0.2); // 20% chance of being "new"
-    setIsPopular(Math.random() < 0.3); // 30% chance of being "popular"
-  }, []);
+  const resolveImageSrc = (img) => {
+    if (!img) return '';
+    const isAbsolute = /^(https?:)?\/\//.test(img) || img.startsWith('/') || img.startsWith('data:') || img.startsWith('blob:');
+    return isAbsolute ? img : `${url}/images/${img}`;
+  };
+
+  // Stable badge logic based on item id — no random, no flicker
+  const numericId = parseInt(id, 10) || 0;
+  const isNew = numericId % 5 === 0;       // items 5,10,15,20,25,30
+  const isPopular = numericId % 3 === 1;   // items 1,4,7,10,13,16...
 
   const handleImageLoad = () => {
     setImageLoaded(true);
@@ -52,7 +54,7 @@ const FoodItem = ({ id, name, price, description, image }) => {
         {/* Image with loading placeholder */}
         <img 
           className='food-item-image' 
-          src={image.startsWith('http') ? image : url + "/images/" + image} 
+          src={resolveImageSrc(image)}
           alt={name}
           onLoad={handleImageLoad}
           style={{

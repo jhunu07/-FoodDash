@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './PlaceOrder.css';
-import { StoreContext, } from '../../context/StoreContext';
+import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const PlaceOrder = () => {
@@ -25,6 +26,12 @@ const PlaceOrder = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const resolveImageSrc = (img) => {
+    if (!img) return '';
+    const isAbsolute = /^(https?:)?\/\//.test(img) || img.startsWith('/') || img.startsWith('data:') || img.startsWith('blob:');
+    return isAbsolute ? img : `${url}/images/${img}`;
+  };
+
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     setData((prevData) => ({ ...prevData, [name]: value }));
@@ -42,7 +49,7 @@ const PlaceOrder = () => {
     event.preventDefault();
 
     if (getTotalCartAmount() === 0) {
-      alert('Your cart is empty.');
+      toast.warn('Your cart is empty.');
       return;
     }
 
@@ -74,21 +81,21 @@ const PlaceOrder = () => {
       if (response.data.success && response.data.session_url) {
         window.location.replace(response.data.session_url);
       } else if (response.data.success && response.data.cod) {
+        toast.success('Order placed successfully!');
         setCodConfirmation({ show: true, orderId: response.data.orderId, message: response.data.message || 'Order placed (Cash on Delivery).' });
         setTimeout(() => {
           navigate('/myorders');
         }, 4000);
       } else {
-        alert(response.data.message || 'Failed to place order. Please try again.');
+        toast.error(response.data.message || 'Failed to place order. Please try again.');
       }
     } catch (error) {
-      alert(error.response?.data?.message || 'An error occurred while placing the order.');
+      toast.error(error.response?.data?.message || 'An error occurred while placing the order.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const deliveryFee = 0;
   const totalAmount = getTotalCartAmount();
  
 const navigate = useNavigate()
@@ -99,7 +106,7 @@ const navigate = useNavigate()
    {
     navigate('/cart')
    }
-  },[token])
+  }, [token, getTotalCartAmount, navigate])
 
   const orderItems = food_list.filter((item) => cartItems[item._id] > 0);
 
@@ -125,7 +132,7 @@ const navigate = useNavigate()
       )}
 
       <div className="checkout-header">
-        <h1>🛍️ Checkout</h1>
+        <h1>Checkout</h1>
         <p>Complete your order in a few simple steps</p>
       </div>
 
@@ -367,7 +374,7 @@ const navigate = useNavigate()
               <div className="items-list">
                 {orderItems.map((item) => (
                   <div key={item._id} className="summary-item">
-                    <img src={item.image.startsWith('http') ? item.image : url + "/images/" + item.image} alt={item.name} />
+                    <img src={resolveImageSrc(item.image)} alt={item.name} />
                     <div className="item-details">
                       <h4>{item.name}</h4>
                       <p>Qty: {cartItems[item._id]}</p>

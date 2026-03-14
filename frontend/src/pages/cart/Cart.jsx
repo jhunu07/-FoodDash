@@ -3,18 +3,26 @@ import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const Cart = () => {
   const {cartItems, food_list, removeFromCart, addToCart, getTotalCartAmount, url} = useContext(StoreContext);
   const navigate = useNavigate();
   const [promoCode, setPromoCode] = useState('');
-  const [promoApplied, setPromoApplied] = useState(false);
+
+  const resolveImageSrc = (img) => {
+    if (!img) return '';
+    const isAbsolute = /^(https?:)?\/\//.test(img) || img.startsWith('/') || img.startsWith('data:') || img.startsWith('blob:');
+    return isAbsolute ? img : `${url}/images/${img}`;
+  };
 
   const handlePromoSubmit = () => {
-    if (promoCode.trim()) {
-      setPromoApplied(true);
-      setTimeout(() => setPromoApplied(false), 3000);
+    if (!promoCode.trim()) {
+      toast.warn('Please enter a promo code.');
+      return;
     }
+    // TODO: validate against real promo codes from backend
+    toast.info('This promo code is not valid or has expired.');
   };
 
   const cartItemsCount = Object.values(cartItems).reduce((sum, count) => sum + count, 0);
@@ -54,7 +62,7 @@ const Cart = () => {
                     <div key={item._id} className='cart-item-card'>
                       <div className="cart-item-product">
                         <div className="cart-item-image">
-                          <img src={item.image.startsWith('http') ? item.image : url + "/images/" + item.image} alt={item.name} />
+                          <img src={resolveImageSrc(item.image)} alt={item.name} />
                         </div>
                         <div className="cart-item-details">
                           <h3>{item.name}</h3>
@@ -124,11 +132,6 @@ const Cart = () => {
                 />
                 <button onClick={handlePromoSubmit}>Apply</button>
               </div>
-              {promoApplied && (
-                <div className="promo-success">
-                  ✓ Promo code applied successfully!
-                </div>
-              )}
             </div>
 
             <div className="cart-total-card">

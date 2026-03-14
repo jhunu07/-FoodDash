@@ -1,10 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import './MyOrders.css';
 import { StoreContext } from '../../context/StoreContext';
 import axios from 'axios';
 import { assets } from '../../assets/assets';
-import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import { toast } from 'react-toastify';
 
 const MyOrders = () => {
   const { url, token } = useContext(StoreContext);
@@ -26,31 +25,29 @@ const MyOrders = () => {
     if (!window.confirm('Are you sure you want to cancel this order?')) {
       return;
     }
-    
+    const toastId = toast.loading('Cancelling order...');
     try {
       const response = await axios.post(
         `${url}/api/order/cancel`,
         { orderId },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-      
       if (response.data.success) {
-        alert('Order cancelled successfully');
-        fetchOrders(); // Refresh orders
+        toast.update(toastId, { render: 'Order cancelled successfully.', type: 'success', isLoading: false, autoClose: 3000 });
+        fetchOrders();
       } else {
-        alert(response.data.message || 'Failed to cancel order');
+        toast.update(toastId, { render: response.data.message || 'Failed to cancel order.', type: 'error', isLoading: false, autoClose: 3000 });
       }
-    } catch (error) {
-      alert('Failed to cancel order. Please try again.');
+    } catch {
+      toast.update(toastId, { render: 'Failed to cancel order. Please try again.', type: 'error', isLoading: false, autoClose: 3000 });
     }
   };
 
-  const generateInvoice = (order) => {
+  const generateInvoice = async (order) => {
+    const toastId = toast.loading('Generating invoice...');
     try {
+      const { jsPDF } = await import('jspdf');
+      const { default: autoTable } = await import('jspdf-autotable');
       const doc = new jsPDF();
       
       // Header - Pink/Magenta gradient background (left side)
@@ -226,13 +223,13 @@ const MyOrders = () => {
       
       // Save the PDF
       doc.save(`EatSprint_Invoice_${orderId}.pdf`);
-    } catch (error) {
-
-      alert('Failed to generate invoice. Please try again.');
+      toast.update(toastId, { render: 'Invoice downloaded! 📄', type: 'success', isLoading: false, autoClose: 3000 });
+    } catch {
+      toast.update(toastId, { render: 'Failed to generate invoice. Please try again.', type: 'error', isLoading: false, autoClose: 3000 });
     }
   };
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     if (!token) return;
     
     try {
@@ -250,21 +247,21 @@ const MyOrders = () => {
       if (response.data.success) {
         setData(response.data.data);
       } else {
-        console.error("Failed to fetch orders:", response.data.message);
+        toast.error('Failed to fetch orders: ' + response.data.message);
       }
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
+    } catch {
+      toast.error('Failed to load orders. Please refresh the page.');
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, url]);
 
   useEffect(() => {
     fetchOrders();
     // Set up periodic refresh
     const interval = setInterval(fetchOrders, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
-  }, [token]);
+  }, [fetchOrders]);
 
   if (loading) {
     return (

@@ -7,16 +7,19 @@
 }
 body{
   min-height: 100vh;
-  background-color: #FCFCFC;
+  background:
+    radial-gradient(circle at 0% 0%, #fff5f1 0%, transparent 36%),
+    radial-gradient(circle at 100% 20%, #fff1f2 0%, transparent 34%),
+    #fcfcfc;
 }
 :root{
-  --bg:#FBFBFB;
+  --bg:#f8f8fa;
   --card:#ffffff;
   --muted:#6d6d6d;
   --accent:#ff6b4a;
   --accent-2:#ff4757;
   --soft-accent: rgba(255,107,74,0.06);
-  --border: rgba(0,0,0,0.06);
+  --border: rgba(0,0,0,0.08);
 }
 
 main.app-main{
@@ -39,10 +42,13 @@ a{
 hr{
   border: none;
   height: 1px;
-  background-color: #A9A9A9;
+  background-color: rgba(0,0,0,0.08);
 }
 .app-content{
   display: flex;
+  gap: 20px;
+  padding: 20px;
+  align-items: flex-start;
 }
 .flex-col{
   display: flex;
@@ -51,4 +57,30 @@ hr{
 }
 .cursor{
   cursor: pointer;
+}
+
+.app{
+  min-height: 100vh;
+}
+
+.page-content{
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(20, 20, 40, 0.04);
+  min-height: calc(100vh - 120px);
+}
+
+@media (max-width: 900px) {
+  .app-content {
+    flex-direction: column;
+    gap: 12px;
+    padding: 12px;
+  }
+  .page-content {
+    width: 100%;
+    min-height: auto;
+    border-radius: 12px;
+  }
 }

@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
 import './Header.css'
 
+const heroTexts = [
+  {
+    title: "Order your favourite food here",
+    subtitle: "Choose from a diverse menu featuring a delectable array of dishes crafted with the finest ingredients and culinary expertise."
+  },
+  {
+    title: "Fresh ingredients, delivered fast",
+    subtitle: "Experience the perfect blend of quality and convenience with our premium food delivery service."
+  },
+  {
+    title: "Taste the difference today",
+    subtitle: "Discover extraordinary flavors from local chefs and restaurants, delivered right to your doorstep."
+  }
+];
+
 const Header = () => {
   const [currentText, setCurrentText] = useState(0);
-  
-  const heroTexts = [
-    {
-      title: "Order your favourite food here",
-      subtitle: "Choose from a diverse menu featuring a delectable array of dishes crafted with the finest ingredients and culinary expertise."
-    },
-    {
-      title: "Fresh ingredients, delivered fast",
-      subtitle: "Experience the perfect blend of quality and convenience with our premium food delivery service."
-    },
-    {
-      title: "Taste the difference today",
-      subtitle: "Discover extraordinary flavors from local chefs and restaurants, delivered right to your doorstep."
-    }
-  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
