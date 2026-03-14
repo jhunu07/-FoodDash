@@ -1,0 +1,34 @@
+.home-page {
+	width: 100%;
+}
+
+.home-section {
+	width: 100%;
+	margin-top: 26px;
+}
+
+.home-section:first-of-type {
+	margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+	.home-section {
+		margin-top: 22px;
+	}
+}
+
+@media (max-width: 768px) {
+	.home-section {
+		margin-top: 18px;
+	}
+
+	.home-section:first-of-type {
+		margin-top: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	.home-section {
+		margin-top: 14px;
+	}
+}

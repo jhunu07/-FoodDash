@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
-import { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -21,12 +20,12 @@ const Cart = () => {
       toast.warn('Please enter a promo code.');
       return;
     }
-    // TODO: validate against real promo codes from backend
     toast.info('This promo code is not valid or has expired.');
   };
 
-  const cartItemsCount = Object.values(cartItems).reduce((sum, count) => sum + count, 0);
-  const isCartEmpty = cartItemsCount === 0;
+  const cartProducts = food_list.filter((item) => Number(cartItems[item._id] || 0) > 0);
+  const cartItemsCount = cartProducts.reduce((sum, item) => sum + Number(cartItems[item._id] || 0), 0);
+  const isCartEmpty = cartProducts.length === 0;
 
   return (
     <div className='cart-page'>
@@ -56,63 +55,58 @@ const Cart = () => {
             </div>
 
             <div className="cart-items-list">
-              {food_list.map((item) => {
-                if (cartItems[item._id] > 0) {
-                  return (
-                    <div key={item._id} className='cart-item-card'>
-                      <div className="cart-item-product">
-                        <div className="cart-item-image">
-                          <img src={resolveImageSrc(item.image)} alt={item.name} />
-                        </div>
-                        <div className="cart-item-details">
-                          <h3>{item.name}</h3>
-                          <p className="cart-item-category">Category: {item.category}</p>
-                        </div>
-                      </div>
-
-                      <div className="cart-item-price">
-                        <span className="price-label">Price</span>
-                        <span className="price-value">₹{item.price}</span>
-                      </div>
-
-                      <div className="cart-item-quantity">
-                        <span className="quantity-label">Quantity</span>
-                        <div className="quantity-controls">
-                          <button 
-                            className="quantity-btn minus"
-                            onClick={() => removeFromCart(item._id)}
-                          >
-                            −
-                          </button>
-                          <span className="quantity-value">{cartItems[item._id]}</span>
-                          <button 
-                            className="quantity-btn plus"
-                            onClick={() => addToCart(item._id)}
-                          >
-                            +
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="cart-item-total">
-                        <span className="total-label">Total</span>
-                        <span className="total-value">₹{item.price * cartItems[item._id]}</span>
-                      </div>
-
-                      <div className="cart-item-remove">
-                        <button 
-                          className="remove-btn"
-                          onClick={() => removeFromCart(item._id)}
-                          title="Remove item"
-                        >
-                          🗑️
-                        </button>
-                      </div>
+              {cartProducts.map((item) => (
+                <div key={item._id} className='cart-item-card'>
+                  <div className="cart-item-product">
+                    <div className="cart-item-image">
+                      <img src={resolveImageSrc(item.image)} alt={item.name} />
                     </div>
-                  );
-                }
-                return null;
-              })}
+                    <div className="cart-item-details">
+                      <h3>{item.name}</h3>
+                      <p className="cart-item-category">Category: {item.category}</p>
+                    </div>
+                  </div>
+
+                  <div className="cart-item-price">
+                    <span className="price-label">Price</span>
+                    <span className="price-value">₹{item.price}</span>
+                  </div>
+
+                  <div className="cart-item-quantity">
+                    <span className="quantity-label">Quantity</span>
+                    <div className="quantity-controls">
+                      <button 
+                        className="quantity-btn minus"
+                        onClick={() => removeFromCart(item._id)}
+                      >
+                        −
+                      </button>
+                      <span className="quantity-value">{cartItems[item._id]}</span>
+                      <button 
+                        className="quantity-btn plus"
+                        onClick={() => addToCart(item._id)}
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="cart-item-total">
+                    <span className="total-label">Total</span>
+                    <span className="total-value">₹{item.price * cartItems[item._id]}</span>
+                  </div>
+
+                  <div className="cart-item-remove">
+                    <button 
+                      className="remove-btn"
+                      onClick={() => removeFromCart(item._id)}
+                      title="Remove item"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 

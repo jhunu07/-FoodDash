@@ -11,6 +11,31 @@
    border-radius:50%;
    animation:rotate 1s infinite; 
 }
+
+@media (max-width: 768px) {
+    .verify {
+        min-height: 50vh;
+    }
+
+    .verify .spinner {
+        width: 80px;
+        height: 80px;
+        border-width: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .verify {
+        min-height: 45vh;
+    }
+
+    .verify .spinner {
+        width: 64px;
+        height: 64px;
+        border-width: 3px;
+    }
+}
+
 @keyframes rotate{
     100%{
         transform: rotate(360deg);

@@ -108,6 +108,29 @@ const Navbar = ({ setShowLogin }) => {
     setDropdownOpen(false);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 900) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   /* ---------------- LOGOUT ---------------- */
   const logout = () => {
     localStorage.removeItem("token");
@@ -124,6 +147,7 @@ const Navbar = ({ setShowLogin }) => {
         className="navbar-brand"
         onClick={() => {
           setMenu("home");
+          setMobileMenuOpen(false);
           window.scrollTo({ top: 0, behavior: "smooth" });
         }}
       >
@@ -138,6 +162,7 @@ const Navbar = ({ setShowLogin }) => {
             to="/"
             onClick={() => {
               setMenu("home");
+              setMobileMenuOpen(false);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className={menu === "home" ? "active-link" : ""}
@@ -178,6 +203,15 @@ const Navbar = ({ setShowLogin }) => {
         </li>
 
       </ul>
+
+      {mobileMenuOpen && (
+        <button
+          type="button"
+          aria-label="Close mobile menu"
+          className="mobile-menu-overlay"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
       {/* -------- RIGHT SIDE -------- */}
       <div className="navbar-right">

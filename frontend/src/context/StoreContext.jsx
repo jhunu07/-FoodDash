@@ -78,6 +78,25 @@ const StoreContextProvider = ({ children }) => {
     }
   }, [cartItems, token]);
 
+  // Keep cart clean: remove stale ids and non-positive quantities once food list is available
+  useEffect(() => {
+    if (!food_list.length) return;
+
+    const validIds = new Set(food_list.map((item) => item._id));
+    const normalized = {};
+
+    for (const [itemId, qty] of Object.entries(cartItems)) {
+      const quantity = Number(qty);
+      if (validIds.has(itemId) && quantity > 0) {
+        normalized[itemId] = quantity;
+      }
+    }
+
+    if (JSON.stringify(normalized) !== JSON.stringify(cartItems)) {
+      setCartItems(normalized);
+    }
+  }, [cartItems, food_list]);
+
   // Add to cart
   const addToCart = async (itemId) => {
     setCartItems((prev) => ({
@@ -139,8 +158,12 @@ const StoreContextProvider = ({ children }) => {
 
   // Total cart item count
   const getTotalCartItems = () => {
+    if (!food_list.length) return 0;
     let count = 0;
-    for (const itemId in cartItems) count += cartItems[itemId];
+    for (const food of food_list) {
+      const quantity = Number(cartItems[food._id] || 0);
+      if (quantity > 0) count += quantity;
+    }
     return count;
   };
 

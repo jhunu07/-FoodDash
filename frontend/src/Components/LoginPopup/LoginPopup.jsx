@@ -11,11 +11,23 @@ const LoginPopup = ({ setShowLogin }) => {
   const [data, setData] = useState({ name: "", email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
+    document.body.classList.add('no-scroll');
+
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      setData((prev) => ({ ...prev, email: rememberedEmail }));
+      setRememberMe(true);
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
   }, []);
 
   const sanitizeInput = (input) => {
@@ -86,6 +98,13 @@ const LoginPopup = ({ setShowLogin }) => {
       if (resData.success) {
         localStorage.setItem("token", resData.token);
         setToken(resData.token);
+
+        if (rememberMe) {
+          localStorage.setItem('rememberedEmail', data.email);
+        } else {
+          localStorage.removeItem('rememberedEmail');
+        }
+
         toast.success(authMode === "Login" ? "Logged in successfully" : "Account created successfully");
         setShowLogin(false);
       } else {
@@ -109,20 +128,41 @@ const handleClose = () => {
   setTimeout(() => setShowLogin(false), 300);
 };
 
+const handleForgotPassword = () => {
+  toast.info('Password reset will be available soon.');
+};
+
 return (
   <div className={`login-popup ${isVisible ? 'visible' : ''}`}>
     <form onSubmit={handleAuth} className={`login-popup-container ${isVisible ? 'slide-in' : ''}`}>
 
       <div className="login-popup-title">
-        <div>
-          <h2>{authMode === "Login" ? "Login" : "Sign Up"}</h2>
+        <div className="title-copy">
+          <h2>{authMode === "Login" ? "Welcome back" : "Create account"}</h2>
+          <p>{authMode === "Login" ? "Sign in to continue" : "Sign up to start ordering"}</p>
         </div>
-        <img
-          onClick={handleClose}
-          src={assets.cross_icon}
-          alt="Close"
-          className="close-btn"
-        />
+        <button type="button" className="close-btn" onClick={handleClose} aria-label="Close">
+          <img src={assets.cross_icon} alt="" />
+        </button>
+      </div>
+
+      <div className="mode-toggle" role="tablist" aria-label="Authentication mode">
+        <button
+          type="button"
+          className={`mode-btn ${authMode === "Login" ? 'active' : ''}`}
+          onClick={() => handleModeSwitch("Login")}
+          disabled={isLoading}
+        >
+          Login
+        </button>
+        <button
+          type="button"
+          className={`mode-btn ${authMode === "Sign Up" ? 'active' : ''}`}
+          onClick={() => handleModeSwitch("Sign Up")}
+          disabled={isLoading}
+        >
+          Sign Up
+        </button>
       </div>
 
       <div className="login-popup-inputs">
@@ -183,6 +223,27 @@ return (
           </div>
           {errors.password && <span className="error-message">{errors.password}</span>}
         </div>
+
+        {authMode === "Login" && (
+          <div className="login-meta-row">
+            <label className="remember-checkbox">
+              <input
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <span>Remember me</span>
+            </label>
+
+            <button
+              type="button"
+              className="forgot-link"
+              onClick={handleForgotPassword}
+            >
+              Forgot password?
+            </button>
+          </div>
+        )}
       </div>
 
       <button type="submit" className="auth-btn" disabled={isLoading}>
@@ -194,14 +255,6 @@ return (
           authMode === "Sign Up" ? "Create Account" : "Sign In"
         )}
       </button>
-
-      <div className="auth-switch">
-        {authMode === "Login" ? (
-          <p>Don't have an account? <span onClick={() => !isLoading && handleModeSwitch("Sign Up")}>Sign up</span></p>
-        ) : (
-          <p>Already have an account? <span onClick={() => !isLoading && handleModeSwitch("Login")}>Log in</span></p>
-        )}
-      </div>
 
     </form>
   </div>

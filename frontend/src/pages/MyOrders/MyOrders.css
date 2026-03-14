@@ -197,3 +197,106 @@
   flex-direction: column;
   gap: 15px;
 }
+
+@media (max-width: 992px) {
+  .my-orders {
+    padding: 16px;
+  }
+
+  .my-orders-order {
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .my-orders-order img {
+    margin-right: 0;
+  }
+
+  .order-actions {
+    min-width: 145px;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-orders {
+    padding: 14px 10px;
+  }
+
+  .my-orders h2 {
+    font-size: 1.35rem;
+    margin-bottom: 14px;
+  }
+
+  .my-orders-order {
+    flex-direction: column;
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .order-details {
+    width: 100%;
+  }
+
+  .order-items {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  .progress-steps {
+    gap: 8px;
+  }
+
+  .step-label {
+    font-size: 12px;
+  }
+
+  .order-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .track-button,
+  .invoice-button,
+  .cancel-button {
+    width: 100%;
+    min-height: 40px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .my-orders {
+    padding: 12px 6px;
+  }
+
+  .my-orders-order {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .my-orders-order img {
+    width: 42px;
+    height: 42px;
+  }
+
+  .order-items {
+    font-size: 14px;
+  }
+
+  .order-date,
+  .step-label {
+    font-size: 11px;
+  }
+
+  .step-dot {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+
+  .order-actions {
+    grid-template-columns: 1fr;
+  }
+}
